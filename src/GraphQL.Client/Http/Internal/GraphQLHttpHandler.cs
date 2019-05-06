@@ -81,10 +81,9 @@ namespace GraphQL.Client.Http.Internal {
 		public async Task<GraphQLResponse> ReadHttpResponseMessageAsync(HttpResponseMessage httpResponseMessage) {
 			using (var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
 			using (var streamReader = new StreamReader(stream))
-			using (var jsonTextReader = new JsonTextReader(streamReader)) {
-				var jsonSerializer = new JsonSerializer	{
-					ContractResolver = this.Options.JsonSerializerSettings.ContractResolver
-				};
+			using (var jsonTextReader = new JsonTextReader(streamReader))
+			{
+				var jsonSerializer = JsonSerializer.Create(this.Options.JsonSerializerSettings);
 				if (!httpResponseMessage.IsSuccessStatusCode) {
 					GraphQLResponse response;
 					try {
